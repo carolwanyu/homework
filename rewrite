@@ -1,0 +1,25 @@
+from mitmproxy import ctx, http
+import json
+
+
+class ReWrite:
+
+
+    def response(self, flow: http.HTTPFlow):
+        # 判断请求的url 是否包含指定的url信息
+        if "https://stock.xueqiu.com/v5/stock/batch/quote.json?_t=" in flow.request.pretty_url:
+            data = json.loads(flow.response.text)
+            #拿到接口返回的items_size的数量，并生成一个list
+            num = list(range(data["data"]["items_size"]))
+            #循环遍历并给每一个percent重新赋值
+            for i in num:
+                data["data"]["items"][i]["quote"]["percent"] = num[i] + 0.01
+            flow.response.text = json.dumps(data)
+
+
+
+
+addons = [
+    ReWrite()
+]
+
