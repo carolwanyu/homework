@@ -1,0 +1,22 @@
+"""
+实现 MapLocal 修改雪球行情页的股票名称改为自己的名字
+"""
+from mitmproxy import ctx, http
+
+
+class WY_maplocal:
+
+    def requestheaders(self, flow: http.HTTPFlow):
+
+        if "https://stock.xueqiu.com/v5/stock/batch/quote.json?_t=" in flow.request.pretty_url:
+            with open("/Users/comak/Desktop/quote.json", encoding='utf-8') as f:
+                flow.response = http.HTTPResponse.make(
+                    200,
+                    f.read(),
+                    {"Content-Type": "text/html"}
+                )
+
+
+addons = [
+    WY_maplocal()
+]
