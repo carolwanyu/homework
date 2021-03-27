@@ -1,5 +1,5 @@
 """
-实现 MapLocal 修改雪球行情页的股票名称改为自己的名字
+实现  MapLocal 修改雪球行情页的股票名称改为自己的名字
 """
 from mitmproxy import ctx, http
 
